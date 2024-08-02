@@ -17,7 +17,7 @@ import data from "../../src/assets/bootstrap/FMSCA_records.json";
 import Typography from "@mui/material/Typography";
 
 export default function DataGridDemo() {
-    const [filteredRows, setFilteredRows] = React.useState(data);
+    const [filteredRows] = React.useState(data);
     const [page, setPage] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const [selectedRow, setSelectedRow] = React.useState(null);
