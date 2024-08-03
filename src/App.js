@@ -1,4 +1,4 @@
-import DataGridDemo from "./component/Table";
+import {DataGridDemo} from "./component/Table";
 
 function App() {
   return (
