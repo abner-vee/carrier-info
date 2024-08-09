@@ -1,0 +1,30 @@
+/* CarrierDataPivotTable.css */
+
+.container {
+    margin: 0 auto;
+    max-width: 100%;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+.pivot-table {
+    width: 100%;
+    min-height: 400px; /* Adjust the height as needed */
+    border-collapse: collapse;
+}
+
+.pivot-table th,
+.pivot-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    /* Adjust table styles for smaller screens */
+    .pivot-table th,
+    .pivot-table td {
+        padding: 5px;
+        font-size: 0.9em;
+    }
+}
