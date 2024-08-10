@@ -9,6 +9,8 @@ export const DataTable = () => {
     const [page, setPage] = React.useState(0);
     const [open, setOpen] = React.useState(false);
     const [selectedRow, setSelectedRow] = React.useState(null);
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [formData, setFormData] = React.useState({});
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -26,11 +28,12 @@ export const DataTable = () => {
             }
         };
 
-        fetchData().then(console.log);
+        fetchData();
     }, []);
 
     const handleViewClick = (row) => {
         setSelectedRow(row);
+        setFormData(row);  // Initialize form data with the selected row
         setOpen(true);
     };
 
@@ -42,11 +45,30 @@ export const DataTable = () => {
     const handleClose = () => {
         setOpen(false);
         setSelectedRow(null);
+        setIsEditing(false);  // Reset editing state
     };
 
     const handlePageChange = (event) => {
         const pageNumber = parseInt(event.target.value, 10) - 1;
         setPage(pageNumber);
+    };
+
+    const handleInputChange = (key, value) => {
+        setFormData((prevState) => ({
+            ...prevState,
+            [key]: value,
+        }));
+    };
+
+    const handleEditClick = () => {
+        setIsEditing(true);
+    };
+
+    const handleSaveClick = () => {
+        // Logic to save the edited data
+        console.log("Saved data:", formData);
+        setIsEditing(false);
+        setSelectedRow(formData);  // Optionally update the selected row with the new data
     };
 
     const columns = [
@@ -156,15 +178,16 @@ export const DataTable = () => {
                     </DialogTitle>
                     <DialogContent dividers sx={{ backgroundColor: '#f0f0f0' }}>
                         <Grid container spacing={2}>
-                            {selectedRow && Object.entries(selectedRow).map(([key, value]) => (
+                            {selectedRow && Object.entries(formData).map(([key, value]) => (
                                 <Grid item xs={12} sm={6} md={4} key={key}>
                                     <TextField
                                         label={key.replace(/_/g, ' ').toUpperCase()}
                                         value={value}
+                                        onChange={(e) => handleInputChange(key, e.target.value)}
                                         fullWidth
                                         variant="outlined"
                                         InputProps={{
-                                            readOnly: true,
+                                            readOnly: !isEditing,
                                         }}
                                         sx={{ mb: 2 }}
                                     />
@@ -173,7 +196,16 @@ export const DataTable = () => {
                         </Grid>
                     </DialogContent>
                     <DialogActions sx={{ backgroundColor: '#e0e0e0' }}>
-                        <Button autoFocus onClick={handleClose}>
+                        {isEditing ? (
+                            <Button onClick={handleSaveClick} color="primary" variant="contained">
+                                Save
+                            </Button>
+                        ) : (
+                            <Button onClick={handleEditClick} color="primary" variant="contained">
+                                Edit
+                            </Button>
+                        )}
+                        <Button onClick={handleClose}>
                             Close
                         </Button>
                     </DialogActions>
